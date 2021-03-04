@@ -2,12 +2,13 @@ filetype plugin on
 
 call plug#begin('~/.config/nvim/plugged')
 
-Plug 'joshdick/onedark.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mhinz/vim-signify'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'ntk148v/vim-horizon'
+Plug 'itchyny/lightline.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
@@ -26,7 +27,13 @@ set termguicolors
 set scrolloff=8
 set noshowmode
 
-colorscheme onedark
+" colorscheme onedark
+colorscheme horizon
+" highlight Normal cterm=NONE gui=NONE ctermbg=233 ctermfg=252 guibg=NONE guifg=NONE
+highlight Pmenu cterm=NONE gui=NONE ctermbg=233 ctermfg=252 guifg=#ffffff guibg=#111111
+
+
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Use tab for trigger completion with characters ahead and navigate.
 inoremap <silent><expr> <TAB>
@@ -50,16 +57,6 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
 
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
@@ -75,3 +72,9 @@ nnoremap < :vertical resize -5<CR>
 
 nnoremap ? :resize +5<CR>
 nnoremap " :resize -5<CR>
+
+nnoremap ff :GFiles<CR>
+nnoremap fg :Rg<CR>
+
+" let $FZF_DEFAULT_COMMAND='rg --files --follow --no-ignore-vcs --hidden -g "!{**/node_modules/**,.git/*,**/*.pem}"'
+let $FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
